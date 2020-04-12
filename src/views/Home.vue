@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div v-if="status.isLoading">loading</div>
+  <Img v-else :src="data"/>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapState, mapActions, mapGetters } from 'vuex';
+import Img from '@/components/Img.vue';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
+    Img,
+  },
+  computed: {
+    ...mapState('home', ['data']),
+    ...mapGetters('home', ['status']),
+  },
+  methods: mapActions('home', [
+    'fetchDog',
+  ]),
+
+  mounted() {
+    this.fetchDog();
   },
 };
 </script>
